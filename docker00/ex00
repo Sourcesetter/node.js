@@ -1,0 +1,5 @@
+docker build -t my-http-serv .
+docker run --name run-http-serv -d -p 9005:8123 -t my-http-serv
+
+# nach dem Start des Containers sieht man das Ergebnis der
+# eingespielten Software im Output der Console.

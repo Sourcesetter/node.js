@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    restart: unless-stopped
+    volumes:
+      - ~/SWE/node.js/docker01:/usr/share/nginx/html
+    networks:
+       - default
+    depends_on: [run-serv-calc]
+  run-serv-calc:
+    image: http-serv-calc:latest
+    ports:
+      - "9006:8345"

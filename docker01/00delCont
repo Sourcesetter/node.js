@@ -1,0 +1,10 @@
+#!/bin/bash
+# Stop and delelte container
+
+contId=$(docker ps -a | grep serv | awk '{print $1;}')
+echo $contId
+docker stop $contId
+docker rm   $contId
+
+docker volume prune
+

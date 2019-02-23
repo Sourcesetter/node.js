@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    restart: unless-stopped
+    volumes:
+      - ~/SWE/node.js/docker02/html:/usr/share/nginx/html
+      - ~/SWE/node.js/docker02/conf.d:/etc/nginx/conf.d
+    networks:
+       - default
+       - backend
+    depends_on: [run-serv-calc]
+  run-serv-calc:
+    build: .
+    image: http-serv-calc:latest
+    networks:
+       - backend
+networks:
+  backend:
+    driver: bridge

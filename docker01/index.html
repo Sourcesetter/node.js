@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Aufruf eines Backend-Services mit JavaScript</h2>
+<p> Basisfunktionen, keine Eingabevalidierung (docker01) </p>
+
+
+<form>
+Erste Zahl eingeben:
+<input type="number" name="zahl1" id="zahl1">
+Zweite Zahl eingeben:
+<input type="number" name="zahl2" id="zahl2">
+</form>
+<br>
+<button type="button" onclick="document.getElementById('ergebnisOut').innerHTML = add(zahl1.value,zahl2.value, (p) => document.getElementById('servRet').innerHTML = p)" > + </button>
+<button type="button" onclick="document.getElementById('ergebnisOut').innerHTML = sub(zahl1.value,zahl2.value)" > - </button>
+<button type="button" onclick="document.getElementById('ergebnisOut').innerHTML = mult(zahl1.value, zahl2.value, (p) => document.getElementById('servRet').innerHTML = p)" > * </button>
+<button type="button" onclick="document.getElementById('ergebnisOut').innerHTML = div(zahl1.value,zahl2.value, (p) => document.getElementById('servRet').innerHTML = p)" > / </button>
+<button type="button" onclick="{
+	document.getElementById('ergebnisOut').innerHTML = '  ';
+	document.getElementById('servRet').innerHTML = '  '
+	}">clear</button>
+
+<p> Synchrone Ausgabe:</p>
+<p id="ergebnisOut">Hier wird das Ergebnis ausgegeben</p>
+<p> Asynchrone Ausgabe:</p>
+<p id="servRet">Hier wird die Rueckgabe des Web-Services ausgegeben</p>
+
+
+<script type="text/javascript">
+// var baseUrl = "https://jsonplaceholder.typicode.com/todos/";
+var baseUrl = "http://0.0.0.0:9006/";
+
+function sub(a, b) {
+
+  var url = baseUrl + "sub?a=" + a + "+&b=" + b;
+  console.log(url);
+
+  fetch(url)
+    .then(function(response) {
+        return response.text();
+    })
+    .then(function(data){
+        console.log(data);
+    	document.getElementById('servRet').innerHTML = data;
+		// ein direktes Aenderen eines HTML-Elements ist vom Codefluss unebersichtlich
+    })
+
+  return parseFloat(a) - parseFloat(b)
+}
+
+function add(a, b, callback) {
+  var url = baseUrl + "add?a=" + a + "+&b=" + b;
+  console.log(url);
+  fetch(url)
+    .then(function(response) {
+        return response.text();
+    })
+    .then(function(data){
+        console.log(data);
+        callback(data);
+    })
+  return parseFloat(a) + parseFloat(b)
+}
+
+function mult(a, b, callback) {
+  // Rueckgabe ueber ein callback parameter, ein Funktionsaufruf wird als Datensatz interpretiert
+  // Ein einfacher Return ist nicht möglich, da mit dem Backend-Service asynchron gearbeitet wird.
+  console.log(a);
+  console.log(b);
+
+  var url = baseUrl + "mul?a=" + a + "+&b=" + b;
+  console.log(url);
+  fetch(url)
+    .then(function(response) {
+        return response.text();
+    })
+    .then(function(data){
+        console.log(data);
+        callback(data);
+    })
+   return parseFloat(a) * parseFloat(b)
+}
+
+function div(a, b, callback) {
+
+	if(parseFloat(b) != 0){
+  		var url = baseUrl + "div?a=" + a + "+&b=" + b;
+  		console.log(url);
+  		fetch(url)
+    		.then(function(response) {
+       			return response.text();
+    		})
+    		.then(function(data){
+       			console.log(data);
+       			callback(data);
+    		})
+	return parseFloat(a) / parseFloat(b)
+	}
+	else{
+    	return "Error: dividiert durch 0"
+	}
+}
+
+</script>
+
+
+</body>
+</html>
+

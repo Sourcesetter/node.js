@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Aufruf eines Backend-Services mit JavaScript</h2>
+<p> Basisfunktionen, keine Eingabevalidierung </p>
+
+
+<form>
+Erste Zahl eingeben:
+<input type="number" name="zahl1" id="zahl1">
+Zweite Zahl eingeben:
+<input type="number" name="zahl2" id="zahl2">
+</form>
+<br>
+<button type="button" onclick="document.getElementById('ergebnisOut').innerHTML = add(zahl1.value,zahl2.value)" > + </button>
+<button type="button" onclick="document.getElementById('ergebnisOut').innerHTML = sub(zahl1.value,zahl2.value)" > - </button>
+<button type="button" onclick="document.getElementById('ergebnisOut').innerHTML = mult(zahl1.value,zahl2.value)" > * </button>
+<button type="button" onclick="document.getElementById('ergebnisOut').innerHTML = div(zahl1.value,zahl2.value)" > / </button>
+<button type="button" onclick="document.getElementById('ergebnisOut').innerHTML = '  '">clear</button>
+
+<p> Ausgabe:</p>
+<p id="ergebnisOut">Hier wird das Ergebnis ausgegeben</p>
+<p id="servRet">Hier wird die Rueckgabe des Web-Services ausgegeben</p>
+
+
+<script type="text/javascript">
+// var baseUrl = "https://jsonplaceholder.typicode.com/todos/";
+var baseUrl = "http://0.0.0.0:9006/";
+
+function sub(a, b) {
+  return parseFloat(a) - parseFloat(b)
+}
+function add(a, b) {
+  return parseFloat(a) + parseFloat(b)
+}
+
+function mult(a, b) {
+  console.log(a);
+  console.log(b);
+
+  var url = baseUrl + "mul?a=" + a + "+&b=" + b;
+  console.log(url);
+
+  fetch(url)
+    .then(function(response) {
+        return response.text();
+    })
+    .then(function(data){
+        console.log(data);
+        document.getElementById('servRet').innerHTML = data;
+    })
+
+	// keine Idee wie das "data" als Return-Wert zurückgegeben werden kann.
+   return parseFloat(a) * parseFloat(b)
+}
+
+function div(a, b) {
+
+		if(parseFloat(b) != 0){
+             return parseFloat(a) / parseFloat(b)
+		}
+		else{
+             return "Error: dividiert durch 0"
+		}
+}
+
+</script>
+
+
+</body>
+</html>
+

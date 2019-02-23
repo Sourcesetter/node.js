@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Besser mit docker-compose
+# Auf dem Fußweg mit Script Kommandos
+
+docker build -t http-serv-calc .
+docker run --name run-serv-calc -d -p 9006:8345 -t http-serv-calc
+docker run -d -p 80:80 --name webserver -v ~/SWE/node.js/docker01:/usr/share/nginx/html nginx
+# docker start webserver
+
+
+# nach dem Start des Containers sieht man das Ergebnis der
+# eingespielten Software im Output der Console.
